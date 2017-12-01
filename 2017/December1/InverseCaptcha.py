@@ -6,40 +6,45 @@ part2_test_input = {"1212": 6, "1221": 0,"123425":4,"123123":12,"12131415":4}
 
 
 def part1_testCases(test_input):
+    pass_count =0
+    number_of_tests= len(test_input)
     for test_string in test_input:
         #print( "testing string "+ test_string )
         test_result = sumOfMatchingDistance(test_string,1)
         test_output = test_input[test_string]
         if test_result == test_output:
-            #print( "Test of " + test_string +  " passed" )
-            pass
+            #print( " Part1: Test of " + test_string +  " passed" )
+            pass_count +=1
         else:
-             print( "Test of " + test_string + " failed, returned " + str(test_result)  )
+             print( "Part1: Test of " + test_string + " failed, returned " + str(test_result)  )
+    print "Part1: %d of %d passed" % (pass_count,number_of_tests)
 def part2_testCases(test_input):
+    pass_count =0
+    number_of_tests= len(test_input)
     for test_string in test_input:
-        print( "testing string "+ test_string )
+        #print( "testing string "+ test_string )
         test_result = sumOfMatchingDistance(test_string,len(test_string)/2)
         test_output = test_input[test_string]
         if test_result == test_output:
-            print( "Test of " + test_string +  " passed" )
+            #print( "Part2: Test of " + test_string +  " passed" )
+            pass_count +=1
         else:
-             print( "Test of " + test_string + " failed, returned " + str(test_result)  )
+             print( "Part2: Test of " + test_string + " failed, returned " + str(test_result)  )
+    print "Part2: %d of %d passed" % (pass_count,number_of_tests)
 
 def sumOfMatchingDistance(input_string,jump):
     sum =0
     n = len(input_string)
-
-
-    for i in range(n) :
-        if input_string[i] == input_string[(i + jump)%n]:
-            sum += int(input_string[i])
+    for i,digit in enumerate(input_string) :
+        if  digit == input_string[(i + jump)%n]:
+            sum += int(digit)
     return sum 
 
 
 if __name__ == "__main__":
-    #part1_testCases(part1_test_input)
-    # part2_testCases(part2_test_input)
+    part1_testCases(part1_test_input)
+    part2_testCases(part2_test_input)
     sum_part1 = sumOfMatchingDistance(captcha,1)
-    print (sum_part1)
+    print "Part1 result: %d" % (sum_part1)
     sum_part2= sumOfMatchingDistance(captcha,len(captcha)/2)
-    print (sum_part2)
+    print "Part2 result: %d" % (sum_part2)
