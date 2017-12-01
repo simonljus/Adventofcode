@@ -4,22 +4,11 @@ captcha = "951344679963668529792964668968299711431673344545153453235177853425142
 part1_test_input = {"1122": 3, "1111": 4,"1234":0,"91212129":9,"":0,"55":10}
 part2_test_input = {"1212": 6, "1221": 0,"123425":4,"123123":12,"12131415":4}
 
-def sumOfMatchingNeighbors(input_string):
-    i = -1
-    n = len(input_string)
-    max_check = n -1
-    sum =0
-
-    while i < max_check:
-        if input_string[i] == input_string[i+1]:
-            sum += int(input_string[i])
-        i += 1
-    return sum 
 
 def part1_testCases(test_input):
     for test_string in test_input:
         #print( "testing string "+ test_string )
-        test_result = sumOfMatchingNeighbors(test_string)
+        test_result = sumOfMatchingDistance(test_string,1)
         test_output = test_input[test_string]
         if test_result == test_output:
             #print( "Test of " + test_string +  " passed" )
@@ -29,29 +18,28 @@ def part1_testCases(test_input):
 def part2_testCases(test_input):
     for test_string in test_input:
         print( "testing string "+ test_string )
-        test_result = sumOfMatchingDistance(test_string)
+        test_result = sumOfMatchingDistance(test_string,len(test_string)/2)
         test_output = test_input[test_string]
         if test_result == test_output:
             print( "Test of " + test_string +  " passed" )
         else:
              print( "Test of " + test_string + " failed, returned " + str(test_result)  )
 
-def sumOfMatchingDistance(input_string):
+def sumOfMatchingDistance(input_string,jump):
     sum =0
     n = len(input_string)
-    half = n/2
 
 
     for i in range(n) :
-        if input_string[i] == input_string[(i + half)%n]:
+        if input_string[i] == input_string[(i + jump)%n]:
             sum += int(input_string[i])
     return sum 
 
 
 if __name__ == "__main__":
     #part1_testCases(part1_test_input)
-    #part2_testCases(part2_test_input)
-    #sum_part1 = sumOfMatchingNeighbors(captcha)
-    #print (sum_part1)
-    sum_part2= sumOfMatchingDistance(captcha)
+    # part2_testCases(part2_test_input)
+    sum_part1 = sumOfMatchingDistance(captcha,1)
+    print (sum_part1)
+    sum_part2= sumOfMatchingDistance(captcha,len(captcha)/2)
     print (sum_part2)
