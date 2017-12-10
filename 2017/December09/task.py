@@ -1,6 +1,5 @@
 
 def testPart1(test_cases):
-    print "hello world"
     #print test_cases
     for test in test_cases:
         print "testing",test
@@ -10,65 +9,68 @@ def testPart1(test_cases):
             pass
         else:
             print test, "not passed returned", test_result
-def calculateLayers(curly_list,cost):
-    
-    print "new layer"
-    print curly_list
-    sum =0
+
+
+def findSiblings(sibling_brackets,curly_list,index,layer_cost):
     n = len(curly_list)
-    index = 0
-    layer_score =cost
-    found_start = False
+    weight =0
     start_index = n
-    children_count =0
-    while len(curly_list) > 0:
+    end_index = n
+    
+    while (index < n):
         if curly_list[index] == "{":
-            if not found_start:
-                #print "start_layer at index", str(index)
-                found_start = True
-                start_index =index
-                index +=1
-            else:
-                #print "increase children count "
-                children_count +=1
-                index +=1
-
-        elif curly_list[index] == "}":
-            if children_count >0:
-                #print "decrease children count "
-                children_count -=1
-                index +=1
-            else:
-                #print "recursive, current layerscore:", str(layer_score)
-                #print "statrt index ",  str(start_index), "end index ", str(index)
-                
-                sum += layer_score
-                if index -start_index >1:
-
-                    layer_score +=1
-                del curly_list[index]
-                del curly_list[start_index]
-            
-                #print curly_list
-                start_index = len(curly_list)
-                found_start = False
-                index = 0
-                children_count =0
-        else:
-            index +=1
-
-    return sum
+            weight +=1
+            if weight ==1:
+                start_index = index
+                sibling_brackets.append(start_index)
+        elif curly_list[index] =="}":
+            weight -=1
+            if weight ==0:
+                end_index =index
+                sibling_brackets.append(end_index)
+        index +=1
+    if len(sibling_brackets) % 2 ==0:
+        i = len(sibling_brackets) -1
+        while i >= 0:
+            del curly_list[sibling_brackets[i]]
+            i-=1
+        return layer_cost * (len(sibling_brackets)/2)
+    else: 
+        print "Something went wrong"
+    return 0
 
 
-        
+def findPair(curly_list,index):
+    weight =1
+    n = len(curly_list)
+    while (index < n):
+        if curly_list[index] == "{":
+            weight +=1
+        elif curly_list[index] =="}":
+            weight -=1
+            if weight ==0:
+                return index
+        index +=1
 
 
-        
-        
+def calculateSiblings(curly_list,cost):
+    index =0
+    msum =0
+    while len(curly_list) > 0:
+        #print curly_list
+        if curly_list[index] == "{":
+            end_index =findPair(curly_list,index +1)
+            #print "end done"
+            sibling_arr= [index,end_index]
+            msum += findSiblings(sibling_arr,curly_list,end_index +1,cost)
+            #print "sibling done"
+            cost +=1
+            index =0
+    return msum
 
 
 def part1(input_string):
-    sum =0
+    msum =0
     n = len(input_string)
     input_list = list(input_string)
     layer_score =0
@@ -82,6 +84,7 @@ def part1(input_string):
     curly_group =""
     curly_weight =0
     curlies =[]
+    garbage_count =0
     i =0 
     while (i <n):
         c = input_list[i]
@@ -95,6 +98,7 @@ def part1(input_string):
                 garbage_from = n
             else: 
                 input_list[i] = "a"
+                garbage_count +=1
 
 
 
@@ -130,18 +134,16 @@ def part1(input_string):
         for curly_list in curlies:
             #print curly_list
             #print len(curlies)
-            sum += calculateLayers(curly_list[:],1)
+            msum += calculateSiblings(curly_list[:],1)
     else:
         print("Seems wrong")
         print(stat_group,end_group)
-        
 
-
-    return sum 
+    return msum,garbage_count
 def readStringFromFile(filename):
     return open(filename,'r').readline()
 def testCases():
-    part1_test_input = {"{}": 1, "{{{}}}": 6,"{{},{}}":5,"{{{},{},{{}}}}":16,"{<a>,<a>,<a>,<a>}":1,"{{<ab>},{<ab>},{<ab>},{<ab>}}":9,"{{<!!>},{<!!>},{<!!>},{<!!>}}":9,"{{<a!>},{<a!>},{<a!>},{<ab>}}":3}
+    part1_test_input = {"{}": 1, "{{{}}}": 6,"{{},{}}":5,"{{{},{},{{}}}}":16,"{<a>,<a>,<a>,<a>}":1,"{{<ab>},{<ab>},{<ab>},{<ab>}}":9,"{{<!!>},{<!!>},{<!!>},{<!!>}}":9,"{{<a!>},{<a!>},{<a!>},{<ab>}}":3, "{ { { {} } },{} }":12,"{ { { {} {} } },{} }":16  }
     working = {"{}": 1,"{{{}}}": 6}
     partly = {"{{},{}}":5}
     part1_complete_sum = 1 +6+5+16+1+9+9+3
@@ -151,6 +153,7 @@ def testCases():
     testPart1(part1_complete_test_input)
 
 if __name__ == "__main__":
-    testCases()
+    #testCases()
     input_string = readStringFromFile("input.txt")
-    print str(part1(input_string))
+    msum, garbage_count = part1(input_string)
+    print str(msum), str(garbage_count)
