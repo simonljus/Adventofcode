@@ -22,15 +22,18 @@ def getWeights(part1_input,parent):
                 child_weights=[]
                 single_weights =[]
                 for child in row[3:]:
+                    #recursion
                     single_weight,child_weight, flag = getWeights(part1_input,child)
                     if flag != -1:
+                        #done!!!!! no idea why it prints double though
+                        print "diff by ", flag
                         return single_weight,child_weight,flag
                     else:
                         child_weights.append(child_weight)
                         single_weights.append(single_weight)
                 sorted_child_weights = sorted(child_weights)
                 if sorted_child_weights[0] != sorted_child_weights[-1]:
-                    print sorted_child_weights, "fix the parenthesus suff below, should be correct thoug"
+                    print sorted_child_weights
                     if sorted_child_weights[0] == sorted_child_weights[1]:
                         wrong_val = sorted_child_weights[-1]
                         wrong_index =child_weights.index(wrong_val)
@@ -73,14 +76,11 @@ def file_to_array(filename):
                 filerow =filerow.replace(",","")
                 row_array = filerow.split()
                 input_instructions.append(row_array)
-                if len(row_array) >= 4:
-                    discholders.append(row_array[:])
-                    bottomnames.append(row_array[0])
 
-    return input_instructions, discholders,bottomnames
+    return input_instructions
 
 if __name__ == "__main__":
-    part1_input,discholders,bottomnames = file_to_array("input.txt")
+    part1_input = file_to_array("input.txt")
     #my_dict = arrayToDict(part1_input)
     part1_result = part1(part1_input)
     single_weight,child_weight,flag= getWeights(part1_input,part1_result)
