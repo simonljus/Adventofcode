@@ -1,0 +1,4 @@
+Generator A starts with: 699
+Factor A: 16807
+Generator B starts with: 124
+Factor B: 48271
