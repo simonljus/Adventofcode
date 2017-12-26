@@ -1,0 +1,20 @@
+Rework for part 2 
+
+b = 107900 c = 107900 + 17000
+while true 
+    f =1
+    d =2 
+    do while d < b
+        e =2
+        do while e < b
+            if d*e == b
+                f =0
+            e +=1
+    g = 0
+    if f ==0
+        h +=1
+        g =b
+    g -=c 
+    if g == 0
+        break
+    b + = 17
