@@ -25,7 +25,7 @@ def calculate_extra(mass):
             return extra_fuel
         extra_fuel += mass  
 
-calculate_fuel()        
+calculate_fuel()     
 print('Jag och Alex proggar för första gången ihop<3')
 
 
