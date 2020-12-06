@@ -49,6 +49,6 @@ func problem2() int32 {
 	return 0
 }
 func main() {
-	fmt.Printf("Problem 1: %d", problem1())
+	//fmt.Printf("Problem 1: %d", problem1())
 	fmt.Printf("Problem 2: %d", problem2())
 }
