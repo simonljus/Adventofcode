@@ -67,9 +67,9 @@ func problem1(color string, bagmap map[string][]Bag) int64 {
 	seen := make(map[string]bool)
 	linked[color] = true
 	seen[color] = true
-	return recSomething(&linked, &seen, &bagmap)
+	return getExistIn(&linked, &seen, &bagmap)
 }
-func recSomething(linked *map[string]bool, seen *map[string]bool, bagmap *map[string][]Bag) int64 {
+func getExistIn(linked *map[string]bool, seen *map[string]bool, bagmap *map[string][]Bag) int64 {
 	inner := make(map[string]bool)
 	searching := *seen
 	for key, bags := range *bagmap {
@@ -79,7 +79,7 @@ func recSomething(linked *map[string]bool, seen *map[string]bool, bagmap *map[st
 		}
 	}
 	if len(inner) != 0 {
-		recSomething(&inner, &searching, bagmap)
+		getExistIn(&inner, &searching, bagmap)
 	}
 	return int64(len(*seen) - 1)
 

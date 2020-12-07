@@ -15,7 +15,7 @@ func TestToBag(t *testing.T) {
 }
 func TestSolve(t *testing.T) {
 
-	p1Expected, p2Expected := 4, 32
+	p1Expected, p2Expected := int64(4), int64(32)
 	if p1Actual, p2Actual := solve("test_input.txt"); p1Actual != p1Expected {
 		t.Errorf("Problem1: expected  %d actual %d ", p1Expected, p1Actual)
 	} else if p2Actual != p2Expected {
