@@ -37,5 +37,5 @@ func main() {
 	fmt.Println(fmt.Sprintf("Test Problem 1: %d , expected %d", tp1, 42))
 	fmt.Println(fmt.Sprintf("Test Problem 2: %d , expected %d", tp2, 1337))
 	fmt.Println(fmt.Sprintf("Problem 1: %d , expected %d", p1, 42))
-	fmt.Println(fmt.Sprintf("Problem 2: %d , expexted %d", p2, 1337))
+	fmt.Println(fmt.Sprintf("Problem 2: %d , expected %d", p2, 1337))
 }
