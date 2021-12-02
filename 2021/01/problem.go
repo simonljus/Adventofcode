@@ -16,20 +16,13 @@ func parseInteger(s string) (int, error) {
 func problem1(measurements []int) int {
 	return countIncreased(measurements, 1)
 }
-func sum(measurements []int) int {
-	sum := 0
-	for _, el := range measurements {
-		sum += el
-	}
-	return sum
-}
 func problem2(measurements []int) int {
 	return countIncreased(measurements, 3)
 }
 func countIncreased(measurements []int, windowsize int) int {
 	counter := 0
-	for i := 1; i+windowsize <= len(measurements); i++ {
-		if sum(measurements[i-1:i-1+windowsize]) < sum(measurements[i:i+windowsize]) {
+	for i := windowsize; i < len(measurements); i++ {
+		if measurements[i] > measurements[i-windowsize] {
 			counter++
 		}
 	}
