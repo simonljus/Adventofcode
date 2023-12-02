@@ -1,5 +1,25 @@
 {
     "deno.enable": true,
     "deno.lint": true,
-    "deno.unstable": false
+    "deno.unstable": false,
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#50d11b",
+        "activityBar.background": "#50d11b",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#396ce5",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#50d11b",
+        "statusBar.background": "#3fa415",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#50d11b",
+        "statusBarItem.remoteBackground": "#3fa415",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#3fa415",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#3fa41599",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#3fa415"
 }
