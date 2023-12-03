@@ -26,16 +26,18 @@ function checkForSymbols(
       return;
     }
     for (const symbol of execArray.values()) {
-      if (symbol === gear) {
-        const key = `${rowOffset + search.row.min}_${
-          execArray.index + search.column.min
-        }`;
-        if (!gearMap.has(key)) {
-          gearMap.set(key, []);
-        }
-        gearMap.get(key)?.push(numeric);
+      if (symbol !== gear) {
+        continue;
       }
+      const key = `${rowOffset + search.row.min}_${
+        execArray.index + search.column.min
+      }`;
+      if (!gearMap.has(key)) {
+        gearMap.set(key, []);
+      }
+      gearMap.get(key)?.push(numeric);
     }
+
     symbolFound = true;
   });
   return symbolFound;
