@@ -10,15 +10,44 @@ type Grid = {
 };
 
 export function problem1(text: string) {
-  /**
-   * width
-   * height
-   * find numbers
-   * check if number is a part number (col start, col end,row)
-   *  check surrounding number (max(col start -1,0), min(col end +1,maxcol), max(row-1,0), min(row+1,maxrow) )
-   *      find symbol (not dot or digit)
-   *
-   */
+  return solve(text).part1;
+}
+const symbolPattern = new RegExp(/[^\d.]/);
+const gear = "*";
+function getGearOrSymbol(
+  rows: string[],
+  search: Grid,
+  numeric: number,
+  gearMap: Map<string, number[]>
+) {
+  return rows
+    .slice(search.row.min, search.row.max + 1)
+    .some((row, rowOffset) => {
+      const part = row.slice(search.column.min, search.column.max + 1);
+      const execArray = symbolPattern.exec(part);
+      if (!execArray || !execArray.length) {
+        return false;
+      }
+      for (const [_match, symbol] of execArray.entries()) {
+        if (symbol === gear) {
+          const key = `${rowOffset + search.row.min}_${
+            execArray.index + search.column.min
+          }`;
+          if (!gearMap.has(key)) {
+            gearMap.set(key, []);
+          }
+          gearMap.get(key)?.push(numeric);
+        }
+      }
+      return true;
+    });
+}
+
+export function problem2(text: string) {
+  return solve(text).part2;
+}
+
+function solve(text: string) {
   const rows = text.split("\n");
   const maxRowIndex = rows.length - 1;
   const minRowIndex = 0;
@@ -36,6 +65,7 @@ export function problem1(text: string) {
   };
   const pattern = new RegExp(/\d+/g);
   let total = 0;
+  const gearMap = new Map<string, number[]>();
   for (const [rowIndex, row] of rows.entries()) {
     for (const matchArray of row.matchAll(pattern)) {
       const numeric = matchArray.at(0);
@@ -48,33 +78,32 @@ export function problem1(text: string) {
         console.error(rowIndex);
         throw new Error("Unknown index");
       }
-      const contains = containsSymbol(rows, {
-        column: {
-          min: Math.max(matchIndex - 1, grid.column.min),
-          max: Math.min(matchIndex + numeric.length, grid.column.max),
+
+      const hasSymbol = getGearOrSymbol(
+        rows,
+        {
+          column: {
+            min: Math.max(matchIndex - 1, grid.column.min),
+            max: Math.min(matchIndex + numeric.length, grid.column.max),
+          },
+          row: {
+            min: Math.max(rowIndex - 1, grid.column.min),
+            max: Math.min(rowIndex + 1, grid.column.max),
+          },
         },
-        row: {
-          min: Math.max(rowIndex - 1, grid.column.min),
-          max: Math.min(rowIndex + 1, grid.column.max),
-        },
-      });
-      if (contains) {
+        Number.parseInt(numeric),
+        gearMap
+      );
+      if (hasSymbol) {
         total += Number.parseInt(numeric);
       }
     }
   }
-  return total;
-}
-const symbolPattern = new RegExp(/[^\d.]/);
-export function containsSymbol(rows: string[], search: Grid) {
-  return rows.slice(search.row.min, search.row.max + 1).some((row) => {
-    const part = row.slice(search.column.min, search.column.max + 1);
-    if (Array.from(symbolPattern.exec(part) ?? []).length) {
-      return true;
+  let p2Total = 0;
+  for (const numbers of gearMap.values()) {
+    if (numbers.length === 2) {
+      p2Total += numbers[0] * numbers[1];
     }
-  });
-}
-
-export function problem2(text: string) {
-  return 0;
+  }
+  return { part1: total, part2: p2Total };
 }

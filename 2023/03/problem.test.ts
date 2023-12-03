@@ -8,12 +8,12 @@ Deno.test("p1 test", () => {
 });
 
 Deno.test("p2 test", () => {
-  //assertEquals(problem2(testInputP2), 2286);
+  assertEquals(problem2(testInputP2), 467835);
 });
 
 Deno.test("p1 solution", () => {
   assertEquals(problem1(input), 520135);
 });
 Deno.test("p2 solution", () => {
-  //assertEquals(problem2(input), 72596);
+  assertEquals(problem2(input), 72514855);
 });
