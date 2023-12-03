@@ -11,33 +11,34 @@ type Grid = {
 
 const symbolPattern = new RegExp(/[^\d.]/);
 const gear = "*";
-function getGearOrSymbol(
+
+function checkForSymbols(
   rows: string[],
   search: Grid,
   numeric: number,
   gearMap: Map<string, number[]>
 ) {
-  return rows
-    .slice(search.row.min, search.row.max + 1)
-    .some((row, rowOffset) => {
-      const part = row.slice(search.column.min, search.column.max + 1);
-      const execArray = symbolPattern.exec(part);
-      if (!execArray || !execArray.length) {
-        return false;
-      }
-      for (const symbol of execArray.values()) {
-        if (symbol === gear) {
-          const key = `${rowOffset + search.row.min}_${
-            execArray.index + search.column.min
-          }`;
-          if (!gearMap.has(key)) {
-            gearMap.set(key, []);
-          }
-          gearMap.get(key)?.push(numeric);
+  let symbolFound = false;
+  rows.slice(search.row.min, search.row.max + 1).forEach((row, rowOffset) => {
+    const part = row.slice(search.column.min, search.column.max + 1);
+    const execArray = symbolPattern.exec(part);
+    if (!execArray || !execArray.length) {
+      return;
+    }
+    for (const symbol of execArray.values()) {
+      if (symbol === gear) {
+        const key = `${rowOffset + search.row.min}_${
+          execArray.index + search.column.min
+        }`;
+        if (!gearMap.has(key)) {
+          gearMap.set(key, []);
         }
+        gearMap.get(key)?.push(numeric);
       }
-      return true;
-    });
+    }
+    symbolFound = true;
+  });
+  return symbolFound;
 }
 
 function solve(text: string) {
@@ -72,7 +73,7 @@ function solve(text: string) {
         throw new Error("Unknown index");
       }
 
-      const hasSymbol = getGearOrSymbol(
+      const hasSymbol = checkForSymbols(
         rows,
         {
           column: {
