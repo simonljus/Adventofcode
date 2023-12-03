@@ -9,9 +9,6 @@ type Grid = {
   };
 };
 
-export function problem1(text: string) {
-  return solve(text).part1;
-}
 const symbolPattern = new RegExp(/[^\d.]/);
 const gear = "*";
 function getGearOrSymbol(
@@ -28,7 +25,7 @@ function getGearOrSymbol(
       if (!execArray || !execArray.length) {
         return false;
       }
-      for (const [_match, symbol] of execArray.entries()) {
+      for (const symbol of execArray.values()) {
         if (symbol === gear) {
           const key = `${rowOffset + search.row.min}_${
             execArray.index + search.column.min
@@ -41,10 +38,6 @@ function getGearOrSymbol(
       }
       return true;
     });
-}
-
-export function problem2(text: string) {
-  return solve(text).part2;
 }
 
 function solve(text: string) {
@@ -64,7 +57,7 @@ function solve(text: string) {
     },
   };
   const pattern = new RegExp(/\d+/g);
-  let total = 0;
+  let p1Total = 0;
   const gearMap = new Map<string, number[]>();
   for (const [rowIndex, row] of rows.entries()) {
     for (const matchArray of row.matchAll(pattern)) {
@@ -95,7 +88,7 @@ function solve(text: string) {
         gearMap
       );
       if (hasSymbol) {
-        total += Number.parseInt(numeric);
+        p1Total += Number.parseInt(numeric);
       }
     }
   }
@@ -105,5 +98,11 @@ function solve(text: string) {
       p2Total += numbers[0] * numbers[1];
     }
   }
-  return { part1: total, part2: p2Total };
+  return { part1: p1Total, part2: p2Total };
+}
+export function problem1(text: string) {
+  return solve(text).part1;
+}
+export function problem2(text: string) {
+  return solve(text).part2;
 }
