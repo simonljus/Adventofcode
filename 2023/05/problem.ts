@@ -1,10 +1,8 @@
 const numberPattern = new RegExp(/\d+/g);
 export function problem1(text: string) {
   const [seedsRow, ...almanacStrings] = text.split("\n\n");
-  console.log(seedsRow, almanacStrings);
   const seeds = parseNumbers(seedsRow);
   const almanacs = almanacStrings.map((a) => parseAlmanac(a));
-  console.log(almanacs);
   almanacs.map((almanac) => {
     almanac.ranges;
   });
@@ -16,7 +14,6 @@ export function problem1(text: string) {
     }
     values.push(currentSeed);
   }
-  console.log(values);
   return Math.min(...values);
 }
 type Range = {
@@ -26,17 +23,28 @@ type Range = {
 };
 type Almanac = {
   ranges: Range[];
+  seen: Set<number>;
 };
+
+function pairs<T>(arr: T[]) {
+  const copy = arr.slice();
+  const allPairs: { start: T; range: T }[] = [];
+  while (copy.length) {
+    const [start, range] = copy.splice(0, 2);
+    allPairs.push({ start, range });
+  }
+  return allPairs;
+}
 
 function convert(n: number, almanac: Almanac) {
   for (const range of almanac.ranges) {
     const diff = n - range.source;
     if (diff < 0) {
-      console.log("n too small", n, range);
+      //("n too small", n, range);
       continue;
     }
     if (diff >= range.range) {
-      console.log("n too large", n, range);
+      //("n too large", n, range);
       continue;
     }
     return range.destination + diff;
@@ -63,9 +71,31 @@ function parseAlmanac(almanac: string): Almanac {
       ([destination, source, range]) =>
         ({ destination, source, range } as Range)
     );
-  return { ranges: numbers };
+  return { ranges: numbers, seen: new Set<number>() };
 }
 
 export function problem2(text: string) {
-  return 0;
+  const [seedsRow, ...almanacStrings] = text.split("\n\n");
+  const seeds = pairs(parseNumbers(seedsRow));
+  const almanacs = almanacStrings.map((a) => parseAlmanac(a));
+  almanacs.map((almanac) => {
+    almanac.ranges;
+  });
+  const values: Set<number> = new Set<number>();
+  let minValue = Infinity;
+  for (const [pairIndex, seedRange] of seeds.entries()) {
+    console.log("Pair:", pairIndex);
+    const maxSeed = seedRange.start + seedRange.range;
+    loopSeed: for (let seed = seedRange.start; seed < maxSeed; seed++) {
+      let currentSeed = seed;
+      for (const almanac of almanacs) {
+        currentSeed = convert(currentSeed, almanac);
+      }
+
+      if (currentSeed < minValue) {
+        minValue = currentSeed;
+      }
+    }
+  }
+  return minValue;
 }
