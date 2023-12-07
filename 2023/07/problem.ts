@@ -1,7 +1,12 @@
-type Play = {
-  hand: string;
-  bid: number;
-};
+enum Strength {
+  FIVE_OF_A_KIND = 7,
+  FOUR_OF_A_KIND = 6,
+  FULL_HOUSE = 5,
+  THREE_OF_A_KIND = 4,
+  TWO_PAIR = 3,
+  ONE_PAIR = 2,
+  HIGH_CARD = 1,
+}
 
 const mapper = new Map<string, string>([
   ["2", "C"],
@@ -33,6 +38,7 @@ const mapperJoker = new Map<string, string>([
   ["K", "P"],
   ["A", "R"],
 ]);
+
 export function problem1(text: string) {
   const rows = text.split("\n").map((row) => row.split(" "));
   const sortedByRank = rows
@@ -52,22 +58,13 @@ export function problem1(text: string) {
       }
       return a.sorted < b.sorted ? -1 : 1;
     });
-  console.log(sortedByRank.slice(900));
   const score = sortedByRank.reduce(
     (sum, play, index) => sum + play.bid * (index + 1),
     0
   );
   return score;
 }
-enum Strength {
-  FIVE_OF_A_KIND = 7,
-  FOUR_OF_A_KIND = 6,
-  FULL_HOUSE = 5,
-  THREE_OF_A_KIND = 4,
-  TWO_PAIR = 3,
-  ONE_PAIR = 2,
-  HIGH_CARD = 1,
-}
+
 export function getStrength(hand: string): number {
   const counter = new Map<string, number>();
   for (const card of hand) {
@@ -169,12 +166,9 @@ export function problem2(text: string) {
       }
       return a.sorted < b.sorted ? -1 : 1;
     });
-  console.log(sortedByRank.slice(900));
   const score = sortedByRank.reduce(
     (sum, play, index) => sum + play.bid * (index + 1),
     0
   );
   return score;
 }
-
-function parseNumbers(str: string) {}
