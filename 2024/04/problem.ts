@@ -50,6 +50,23 @@ export function findWord(grid: string[][],word:string,pos: {x: number, y: number
     return true
 }
 
-export function problem2(text:string){
-    return 0
+export function problem2(text: string):number{
+    const grid = text.split("\n").map(row => row.split(""))
+    let count = 0
+    for(const [y,row] of grid.entries()){
+        for(const [x,letter] of row.entries() ){
+            if(letter !== "A"){
+               continue
+            }
+            const topLeft = {x:-1,y:-1}
+            const bottomRight = {x:1,y:1}
+            const topRight = {y:-1,x: 1}
+            const bottomLeft = {y:1,x:-1}
+            const pairs = [[topLeft,bottomRight],[topRight,bottomLeft]]
+            if(pairs.every(pair => pair.map(coord => grid[coord.y +y]?.[coord.x +x] ?? "").sort().join("") === "MS")){
+                count +=1
+            }
+        }
+    }
+    return count
 }
