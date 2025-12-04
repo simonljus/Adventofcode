@@ -19,7 +19,7 @@ export function problem1(text: string): number {
   for (const range of ranges) {
     for (let min = range.min; min <= range.max; min++) {
       const minString = min.toString();
-      const minLength =minString.length;
+      const minLength = minString.length;
       if (minLength % 2 === 1) {
         continue;
       }
